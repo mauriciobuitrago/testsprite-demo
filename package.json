@@ -1,0 +1,23 @@
+{
+  "name": "testsprite-demo-api",
+  "version": "1.0.0",
+  "description": "API REST de demo para clase de TestSprite",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test:testsprite": "testsprite test run --wait"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "@testsprite/testsprite-cli": "latest"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
