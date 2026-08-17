@@ -12,48 +12,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Descargar el código
       - name: Checkout código
         uses: actions/checkout@v4
 
-      # 2. Configurar Node.js 24
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      # 3. Instalar dependencias del proyecto
       - name: Instalar dependencias
         run: npm install
 
-      # 4. Levantar la API en segundo plano
       - name: Levantar API
         run: |
           node src/app.js &
-          sleep 3  # esperar que arranque
+          sleep 3
         env:
           PORT: 3000
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
-      # 5. Instalar TestSprite CLI globalmente
       - name: Instalar TestSprite CLI
         run: |
           npm install -g @testsprite/testsprite-cli
           echo "$(npm root -g)/.bin" >> $GITHUB_PATH
 
-      # 6. Inicializar TestSprite con API Key
       - name: Inicializar TestSprite
         run: testsprite init --from-env --yes --agent none
         env:
           TESTSPRITE_API_KEY: ${{ secrets.TESTSPRITE_API_KEY }}
 
-      # 7. Ejecutar los tests y esperar resultado
       - name: Ejecutar tests
         run: testsprite test run --wait
         env:
           TESTSPRITE_API_KEY: ${{ secrets.TESTSPRITE_API_KEY }}
 
-      # 8. Si hay fallos, obtener el bundle de diagnóstico
       - name: Obtener reporte de fallos (si los hay)
         if: failure()
         run: testsprite test failure get
