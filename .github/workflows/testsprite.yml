@@ -5,6 +5,7 @@ on:
     branches: [master, main, develop]
   pull_request:
     branches: [master, main]
+
 jobs:
   test:
     name: Run TestSprite Tests
@@ -15,12 +16,11 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      # 2. Configurar Node.js 20+
+      # 2. Configurar Node.js 24
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: '24'
 
       # 3. Instalar dependencias del proyecto
       - name: Instalar dependencias
@@ -37,7 +37,9 @@ jobs:
 
       # 5. Instalar TestSprite CLI globalmente
       - name: Instalar TestSprite CLI
-        run: npm install -g @testsprite/testsprite-cli
+        run: |
+          npm install -g @testsprite/testsprite-cli
+          echo "$(npm root -g)/.bin" >> $GITHUB_PATH
 
       # 6. Inicializar TestSprite con API Key
       - name: Inicializar TestSprite
